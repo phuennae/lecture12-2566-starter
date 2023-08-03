@@ -2,6 +2,8 @@
 import Controller from "@/components/Controller";
 import { Detail } from "@/components/Detail";
 import { Header } from "@/components/Header";
+import { ThemeContext } from "@/contexts/ThemeContext";
+import { useState } from "react";
 
 export default function HomePage() {
   const THEMES = {
@@ -17,15 +19,26 @@ export default function HomePage() {
     },
   };
 
-  const setLightTheme = () => {};
-  const setDarkTheme = () => {};
-  const toggleTheme = () => {};
+  const [theme, setTheme] = useState(THEMES.DARK);
+
+  const setLightTheme = () => {
+    setTheme(THEMES.LIGHT);
+  };
+  const setDarkTheme = () => {
+    setTheme(THEMES.DARK)
+  };
+  const toggleTheme = () => {
+    if(theme.name === 'light') setTheme(THEMES.DARK);
+    else setTheme(THEMES.LIGHT);
+  };
 
   return (
-    <div>
-      <Header />
-      <Detail />
-      <Controller />
+    <div style={{ backgroundColor: theme.bgColor, minHeight: "100vh" }}>
+      <ThemeContext.Provider value={{ theme, setLightTheme, setDarkTheme, toggleTheme }}>
+        <Header />
+        <Detail />
+        <Controller />
+      </ThemeContext.Provider>
     </div>
   );
 }
